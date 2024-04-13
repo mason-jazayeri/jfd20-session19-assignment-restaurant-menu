@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <title>منوی کافه رستوران میسن</title>
+</head>
+
+<body>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/mason.js"></script>
+    <script>
+        var siteWrapper = document.createElement("DIV");
+        siteWrapper.classList.add("site-wrapper");
+        document.body.appendChild(siteWrapper);
+        elementorClQs("DIV", "header", ".site-wrapper");
+        elementorClQs("DIV", "container", ".header");
+        elementorClQs("DIV", "header-content", ".header .container");
+        elementorIHQs("H1", "کافه رستوران مِیسِن", ".header .header-content");
+        elementorIHQs("H2", "Mason Cafe & Restaurant Since 1982", ".header .header-content");
+        elementorClQs("UL", "navbar", ".header .header-content");
+        elementorClQs("DIV", "main-section", ".site-wrapper");
+        elementorClQs("DIV", "container", ".main-section");
+        var menuItemsListUlEl = elementorClQs("UL", "menu-items-list", ".main-section .container");
+        menuItemCreator(menuItems);
+        for (var i = 0; i < menuCategories.length; i++) {
+            var categoryItemLiEl = elementorClIHQs("LI", "category-item", menuCategories[i].lableFarsi, ".header .header-content .navbar");
+            categoryItemLiEl.addEventListener("click", function (e) {
+                var filteredMenuItemsList = menuItems.filter(function (currentValue) {
+                    if (e.target.innerHTML === "همه موارد") {
+                        return true;
+                    }
+                    return currentValue.category === e.target.innerHTML;
+                });
+                menuItemsListUlEl.innerHTML = "";
+                menuItemCreator(filteredMenuItemsList);
+            });
+        }
+        function menuItemCreator(arr) {
+            for (var j = 0; j < arr.length; j++) {
+                var menuItemLiEl = elementorClQs("LI", "menu-item", ".main-section .menu-items-list");
+                var menuItemPhotoEl = elementorCl("DIV", "menu-item-photo", menuItemLiEl);
+                var menuItemImgEl = elementor("IMG", menuItemPhotoEl);
+                menuItemImgEl.src = arr[j].photo;
+                var menuItemContentEl = elementorCl("DIV", "menu-item-content", menuItemLiEl);
+                var menuItemContentElUpSide = elementorCl("DIV", "menu-item-content-up-side", menuItemContentEl);
+                elementorIH("H3", arr[j].name, menuItemContentElUpSide);
+                elementorIH("SPAN", numberToPersian(arr[j].price) + " تومان", menuItemContentElUpSide);
+                elementorIH("P", arr[j].description, menuItemContentEl);
+            }
+        }
+        // I didn't write the bellow code snippet myself. Instead, I obtained it entirely from an external source:
+        // https://virgool.io/@erfan578/%D8%AA%D8%A8%D8%AF%DB%8C%D9%84-%D8%A7%D8%B9%D8%AF%D8%A7%D8%AF-%D8%A7%D9%86%DA%AF%D9%84%DB%8C%D8%B3%DB%8C-%D8%A8%D9%87-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-%D8%AF%D8%B1-%D8%AC%D8%A7%D9%88%D8%A7-%D8%A7%D8%B3%DA%A9%D8%B1%DB%8C%D9%BE%D8%AA-hb6uptqcqsvb
+        function numberToPersian(number) {
+            var persian = {
+                0: "۰",
+                1: "۱",
+                2: "۲",
+                3: "۳",
+                4: "۴",
+                5: "۵",
+                6: "۶",
+                7: "۷",
+                8: "۸",
+                9: "۹"
+            };
+            number = number.toString().split("");
+            var persianNumber = ""
+            for (var i = 0; i < number.length; i++) {
+                number[i] = persian[number[i]];
+            }
+            for (var i = 0; i < number.length; i++) {
+                persianNumber += number[i];
+            }
+            return persianNumber;
+        }
+    </script>
+</body>
+
+</html>
